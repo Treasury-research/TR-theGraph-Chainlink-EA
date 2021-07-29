@@ -1,5 +1,5 @@
 const { Requester, Validator } = require('@chainlink/external-adapter')
-
+const config = require('./config')
 // Define custom error scenarios for the API.
 // Return true for the adapter to retry.
 const customError = (data) => {
@@ -12,19 +12,18 @@ const customError = (data) => {
 // with a Boolean value indicating whether or not they
 // should be required.
 const customParams = {
-  base: ['base', 'from', 'coin'],
-  quote: ['quote', 'to', 'market'],
-  endpoint: false
+  p: ['aave'], // project
+  index: ['quote',], // 
 }
 
 const createRequest = (input, callback) => {
   // The Validator helps you validate the Chainlink request data
   const validator = new Validator(callback, input, customParams)
   const jobRunID = validator.validated.id
-  const endpoint = validator.validated.data.endpoint || 'price'
+
   const url = `https://min-api.cryptocompare.com/data/${endpoint}`
-  const fsym = validator.validated.data.base.toUpperCase()
-  const tsyms = validator.validated.data.quote.toUpperCase()
+  const project = validator.validated.data.p.toUpperCase()
+  const index = validator.validated.data.index.toUpperCase()
 
   const params = {
     fsym,
@@ -48,6 +47,8 @@ const createRequest = (input, callback) => {
       // It's common practice to store the desired value at the top-level
       // result key. This allows different adapters to be compatible with
       // one another.
+
+      // handler response
       response.data.result = Requester.validateResultNumber(response.data, [tsyms])
       callback(response.status, Requester.success(jobRunID, response))
     })
