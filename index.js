@@ -35,13 +35,19 @@ const createRequest = (input, callback) => {
   // The default is GET requests
   // method = 'get' 
   // headers = 'headers.....'
-  const config = {
+  const ethConfig = {
+    url,
+    params
+  }
+
+  const polygonConfig = {
     url,
     params
   }
 
   // The Requester allows API calls be retry in case of timeout
   // or connection failure
+  /*
   Requester.request(config, customError)
     .then(response => {
       // It's common practice to store the desired value at the top-level
@@ -55,35 +61,23 @@ const createRequest = (input, callback) => {
     .catch(error => {
       callback(500, Requester.errored(jobRunID, error))
     })
-}
 
-// This is a wrapper to allow the function to work with
-// GCP Functions
-exports.gcpservice = (req, res) => {
-  createRequest(req.body, (statusCode, data) => {
-    res.status(statusCode).send(data)
-  })
-}
 
-// This is a wrapper to allow the function to work with
-// AWS Lambda
-exports.handler = (event, context, callback) => {
-  createRequest(event, (statusCode, data) => {
-    callback(null, data)
-  })
-}
+    */
 
-// This is a wrapper to allow the function to work with
-// newer AWS Lambda implementations
-exports.handlerv2 = (event, context, callback) => {
-  createRequest(JSON.parse(event.body), (statusCode, data) => {
-    callback(null, {
-      statusCode: statusCode,
-      body: JSON.stringify(data),
-      isBase64Encoded: false
+  Promise.all(Requester.request(ethConfig, customError), Requester.request(ethConfig, customError))
+    .then(response => {
+
     })
-  })
+    .catch(
+      error => {
+        callback(500, Requester.errored(jobRunID, error))
+      }
+    )
+
+
 }
+
 
 // This allows the function to be exported for testing
 // or for running in express
