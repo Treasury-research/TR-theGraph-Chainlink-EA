@@ -1,3 +1,3 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.6.0;
-import "@chainlink/contracts/src/v0.6/Oracle.sol";
+pragma solidity 0.4.24;
+import "@chainlink/contracts/src/v0.4/Oracle.sol";

@@ -3,6 +3,10 @@ pragma solidity ^0.6.0;
 
 import "@chainlink/contracts/src/v0.6/ChainlinkClient.sol";
 
+
+interface IMcdexTrade {
+    function trade() external;
+}
 contract TheGraphDataKovan is ChainlinkClient {
     // address private oracle;
     bytes32 private jobId;
@@ -45,6 +49,11 @@ contract TheGraphDataKovan is ChainlinkClient {
         recordChainlinkFulfillment(_requestId)
     {
         data = _data;
+
+        // Call  mcdex trade 
+        if(_data  === stringToBytes32("1")){
+            IMcdexTrade(address(0xcdd440d33D8A1Cb2c53846A6b77586F87e9b4812)).trade();
+        }
     }
 
     /**
