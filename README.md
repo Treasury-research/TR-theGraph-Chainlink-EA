@@ -23,19 +23,19 @@ Also, with this EA, final outputs will be feeded to Ethereum L1, Polygon and oth
     theGraphDataEA.sol
 ```
 
-##### oracle.sol  
+#### **oracle.sol** 
 chainlink oracle contracts
 
-##### mcdex.sol  
+#### **mcdex.sol** 
 mcdex contracts ,this contains **approve**、**deposit**、**tradeBuy**、**tradeSell**
 
-##### priceConsumerV3.sol
+#### **priceConsumerV3.sol**
 get Arbitrum UNI-USD price.sol
 
-##### theGraphDataEA.sol
+#### **theGraphDataEA.sol**
 chianlink External Adapters.
 
-##### theGraphEAKeeper.sol
+#### **theGraphEAKeeper.sol**
 chianlink keeper. this auto call theGraphDataEA.
 
 ### Credit

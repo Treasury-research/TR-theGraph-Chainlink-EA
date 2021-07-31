@@ -82,9 +82,9 @@ contract McdexTrade{
 
     /**
      *  tradeSell
-     * 如果你是合约调用并且抵押物在合约中，trader应该是你的合约地址
+     * 如果你是合约调用并且抵押物在合约中，trader应该是合约地址
      * 合约调用时block.timestamp不可能改变，所以deadline填block.timestamp
-     * referrer是返点地址，可以是0，也可以是你们团队
+     * referrer是返点地址，可以是0，也可以是团队地址
      * flag填0
      * flag为0时，要先调用deposit函数
      * index 8，amount是抵押物
