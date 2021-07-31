@@ -27,7 +27,7 @@ interface IPerpetual {
     ) external returns (int256);
     
     
-        /**
+    /**
      * @notice  Deposit collateral to the perpetual.
      *          Can only called when the perpetual's state is "NORMAL".
      *          This method will always increase `cash` amount in trader's margin account.
@@ -49,15 +49,23 @@ interface IERC20 {
 
 contract McdexTrade{
     
+    /**
+     * approve
+     */
     function approve() public {
         IERC20(address(0x09b98F8b2395D076514037fF7D39a091a536206C)).approve(address(0xc32a2dfEe97E2bABc90a2b5e6aef41e789ef2E13), 200 * 10**18);
     }
     
+    
+    /**
+     * deposit
+     */
     function deposit() public {
         IPerpetual(address(0xc32a2dfEe97E2bABc90a2b5e6aef41e789ef2E13)).deposit(8,address(this),200 * 10**18);
     }
 
     /**
+     *  tradeBuy
      * 如果你是合约调用并且抵押物在合约中，trader应该是你的合约地址
      * 合约调用时block.timestamp不可能改变，所以deadline填block.timestamp
      * referrer是返点地址，可以是0，也可以是你们团队
@@ -67,9 +75,23 @@ contract McdexTrade{
      * 
      * 做多amount为正数，做空为负数
      */
-    
-    
-     function trade() public {
+     function tradeBuy() public {
         IPerpetual(address(0xc32a2dfEe97E2bABc90a2b5e6aef41e789ef2E13)).trade(8,address(this),1* 10**18,30* 10**18,block.timestamp,address(0),0);
+    }
+
+
+    /**
+     *  tradeSell
+     * 如果你是合约调用并且抵押物在合约中，trader应该是你的合约地址
+     * 合约调用时block.timestamp不可能改变，所以deadline填block.timestamp
+     * referrer是返点地址，可以是0，也可以是你们团队
+     * flag填0
+     * flag为0时，要先调用deposit函数
+     * index 8，amount是抵押物
+     * 
+     * 做多amount为正数，做空为负数
+     */
+    function tradeSell() public {
+        IPerpetual(address(0xc32a2dfEe97E2bABc90a2b5e6aef41e789ef2E13)).trade(8,address(this),1* 10**18,-30* 10**18,block.timestamp,address(0),0);
     }
 }

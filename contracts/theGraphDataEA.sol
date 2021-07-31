@@ -7,7 +7,7 @@ import "@chainlink/contracts/src/v0.6/ChainlinkClient.sol";
 interface IMcdexTrade {
     function trade() external;
 }
-contract TheGraphDataKovan is ChainlinkClient {
+contract TheGraphData is ChainlinkClient {
     // address private oracle;
     bytes32 private jobId;
     uint256 private fee;
@@ -30,19 +30,15 @@ contract TheGraphDataKovan is ChainlinkClient {
             address(this),
             this.fulfillEthereumData.selector
         );
-        // 	req.add("function", "GLOBAL_QUOTE");
-        // 	req.add("symbol", "TSLA");
-        //	string[] memory copyPath = new string[](1);
-        //     copyPath[0] = "USD";
-        // //     copyPath[1] = "05. price";
-        //     req.addStringArray("copyPath", copyPath);
-        // req.addInt("times", 100000000);
-        req.add("copyPath", "USD");
+        req.add("project", "TR_ETH_Aave");
+        req.add("index", "FinMerics");
+        req.add("copyPath", "result");
         sendChainlinkRequestTo(_oracle, req, fee);
     }
 
     /**
      * Callback function
+     *
      */
     function fulfillEthereumData(bytes32 _requestId, bytes32 _data)
         public
@@ -50,9 +46,16 @@ contract TheGraphDataKovan is ChainlinkClient {
     {
         data = _data;
 
-        // Call  mcdex trade 
+        /**
+         *  Call  mcdex trade contract
+         *  0  1  2  
+         *  1 tradeBuy  2 tradeSell
+         */
         if(_data  === stringToBytes32("1")){
-            IMcdexTrade(address(0xcdd440d33D8A1Cb2c53846A6b77586F87e9b4812)).trade();
+            IMcdexTrade(address(0xcdd440d33D8A1Cb2c53846A6b77586F87e9b4812)).tradeBuy();
+        }
+        if(_data  === stringToBytes32("2")){
+            IMcdexTrade(address(0xcdd440d33D8A1Cb2c53846A6b77586F87e9b4812)).tradeSell();
         }
     }
 
